@@ -24,6 +24,7 @@ $ npm install
 $ npm run start
 
 # watch mode
+# Server will run on localhost:5000
 $ npm run start:dev
 
 # production mode
