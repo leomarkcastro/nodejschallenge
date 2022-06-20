@@ -8,7 +8,11 @@ import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    cors: {
+      origin: '*',
+    },
+  });
   const config: ConfigService = app.get(ConfigService);
   const port: number = config.get<number>('PORT');
 
