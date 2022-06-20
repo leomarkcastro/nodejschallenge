@@ -22,16 +22,20 @@ export class AuthService {
     if (!isMatch) {
       return null;
     }
+
+    const profile = await this.profilesModule.findById(user.id);
     return {
       email: user.email,
       id: user.id,
+      profile: profile,
     };
   }
 
   async login(user: any) {
-    const payload = { email: user.email, id: user.id, name: user.name };
+    const payload = { email: user.email, id: user.id, profile: user.profile };
     return {
       access_token: this.jwtService.sign(payload),
+      user: payload,
     };
   }
 
@@ -40,8 +44,8 @@ export class AuthService {
     if (!user) {
       return null;
     }
-    await this.profilesModule.create(user, name);
-    const payload = { email: user.email, id: user.id, name: name };
+    const profile = await this.profilesModule.create(user, name);
+    const payload = { email: user.email, id: user.id, profile: profile };
     return this.login(payload);
   }
 }
