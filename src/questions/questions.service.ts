@@ -20,6 +20,9 @@ export class QuestionsService {
   findAll() {
     return this.repository.find({
       relations: ['answers', 'answers.profile', 'profile'],
+      order: {
+        createdAt: 'ASC',
+      },
     });
   }
 

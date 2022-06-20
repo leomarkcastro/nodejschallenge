@@ -43,36 +43,45 @@ export class AnswersController {
       };
     }
 
-    return this.answersService.create(
+    const data = await this.answersService.create(
       createAnswerDto,
       questionObject,
       userObject,
     );
+    return { data };
   }
 
   @Get()
-  findAll() {
-    return this.answersService.findAll();
+  async findAll() {
+    const data = await this.answersService.findAll();
+    return { data, total: data.length };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.answersService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const data = await this.answersService.findOne(+id);
+    return { data };
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateAnswerDto: UpdateAnswerDto,
     @Req() req,
   ) {
-    return this.answersService.update(+id, updateAnswerDto, req.user.userId);
+    const data = await this.answersService.update(
+      +id,
+      updateAnswerDto,
+      req.user.userId,
+    );
+    return { data };
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string, @Req() req) {
-    return this.answersService.remove(+id, +req.user.userId);
+    const data = await this.answersService.remove(+id, +req.user.userId);
+    return { data };
   }
 }

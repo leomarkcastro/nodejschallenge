@@ -40,7 +40,8 @@ export class QuestionsController {
         error: 'User not found',
       };
     }
-    return this.questionsService.create(createQuestionDto, userObject);
+    const data = this.questionsService.create(createQuestionDto, userObject);
+    return { data };
   }
 
   @Get()
@@ -50,30 +51,33 @@ export class QuestionsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return { data: this.questionsService.findOne(+id) };
+  async findOne(@Param('id') id: string) {
+    const data = await this.questionsService.findOne(+id);
+    return { data };
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateQuestionDto: UpdateQuestionDto,
     @Req() req,
   ) {
+    const data = await this.questionsService.update(
+      +id,
+      updateQuestionDto,
+      +req.user.userId,
+    );
     return {
-      data: this.questionsService.update(
-        +id,
-        updateQuestionDto,
-        +req.user.userId,
-      ),
+      data,
     };
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string, @Req() req) {
-    return { data: this.questionsService.remove(+id, +req.user.userId) };
+  async remove(@Param('id') id: string, @Req() req) {
+    const data = await this.questionsService.remove(+id, +req.user.userId);
+    return { data };
   }
 
   @Post('upload')

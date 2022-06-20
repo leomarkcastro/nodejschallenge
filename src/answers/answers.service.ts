@@ -56,6 +56,9 @@ export class AnswersService {
     const answer_DBObject = await this.repository.findOne({
       where: { id, profile: { id: profile } },
       relations: ['profile'],
+      order: {
+        createdAt: 'ASC',
+      },
     });
     if (answer_DBObject) {
       answer_DBObject.answer = updateAnswerDto.answer;

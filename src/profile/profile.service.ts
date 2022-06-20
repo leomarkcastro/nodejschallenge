@@ -24,6 +24,7 @@ export class ProfileService {
   findById(id: number) {
     return this.repository.findOne({
       where: { id },
+      select: ['id', 'name'],
     });
   }
 
